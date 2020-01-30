@@ -10,6 +10,7 @@ class CreateRepliesTable extends Migration
     
     public function up()
     {
+        Schema::dropIfExists('replies');
         Schema::create('replies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('thread_id');
