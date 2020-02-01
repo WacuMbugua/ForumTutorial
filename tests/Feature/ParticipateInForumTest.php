@@ -36,18 +36,15 @@ class ParticipateInForumTest extends TestCase
             ->assertSee($thread->body)
             ->assertSee($thread->title);
     }
-    function test_a_thread_requires_a_title()
-    {
-        $this->publishThread(['title' => null])->assertSessionHasErrors('title');
-    }
- 
- 
-    public function publishThread($overrides = [])
+    public function test_a_reply_requires_a_body()
     {
         $this->signIn();
  
-        $thread = make('App\Thread', $overrides);
+        $thread = create('App\Thread');
  
-        return $this->post('/threads', $thread->toArray());
+        $reply = make('App\Reply', ['body' => null]);
+ 
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertSessionHasErrors('body');
     }
 }

@@ -16,13 +16,16 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($channelSlug = null)
     {
-        $threads = Thread::latest()->get();
-
+        if ($channelSlug) {
+            $channelId = Channel::where('slug', $channelSlug)->first()->id;
+            $threads = Thread::where('channel_id', $channelId)->latest()->get();
+        } else {
+            $threads = Thread::latest()->get();
+        }
         return view('threads.index', compact('threads'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -42,7 +45,9 @@ class ThreadsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required'
+            'title' => 'required',
+            'body' => 'required',
+            'channel_id' => 'required|exists:channels,id'
         ]);
         $thread = Thread::create([
             'user_id' => auth()->id(),
