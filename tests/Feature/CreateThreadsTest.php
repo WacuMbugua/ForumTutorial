@@ -12,13 +12,13 @@ class CreateThreadsTest extends TestCase
     use DatabaseMigrations;
     /**@test */
 
-    
+
    // function test_guest_can_not_create_threads()
    // {
    //     $this->withoutExceptionHandling()->expectException('Illuminate\Auth\AuthenticationException');
  //
   //      $thread = make('App\Thread');
- 
+
   //      $this->post('/threads', $thread->toArray());
   //  }
 
@@ -26,16 +26,16 @@ class CreateThreadsTest extends TestCase
     function test_guest_can_not_create_threads()
     {
         $this->get('/threads/create')->assertRedirect('/login');
- 
+
         $this->post('/threads')->assertRedirect('login');
     }
 
     function test_a_logged_in_user_can_create_new_threads()
     {
         $this->withoutExceptionHandling()->signIn();
- 
+
         $thread = create('App\Thread');
- 
+
         $response = $this->post('/threads', $thread->toArray());
         dd($response->headers->get('Location'));
     }
@@ -44,28 +44,40 @@ class CreateThreadsTest extends TestCase
     {
         $this->publishThread(['title' => null])->assertSessionHasErrors('title');
     }
- 
+
     function test_a_thread_requires_a_body()
     {
         $this->publishThread(['body' => null])->assertSessionHasErrors('body');
     }
-    
+
     public function publishThread($overrides = [])
     {
         $this->signIn();
- 
+
         $thread = make('App\Thread', $overrides);
- 
+
         return $this->post('/threads', $thread->toArray());
     }
     function test_a_thread_requires_a_valid_channel()
     {
         factory('App\Channel', 2)->create();
- 
+
         $this->publishThread(['channel_id' => null])
             ->assertSessionHasErrors('channel_id');
- 
+
         $this->publishThread(['channel_id' => 777])
             ->assertSessionHasErrors('channel_id');
     }
+    function test_a_thread_has_a_creator()
+    {
+        $this->assertInstanceOf('App/User', $this->thread->creator);
+    }
+    function test_a_thread_has_a_string_path()
+    {
+        $thread = create('App\Thread');
+        $this->assertEquals(
+                  "/threads/'{$this->channel->slug}/{$this->id}", $thread->path());
+
+    }
 }
+

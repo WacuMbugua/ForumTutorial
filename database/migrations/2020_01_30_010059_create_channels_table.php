@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateChannelsTable extends Migration
 {
-    protected $fillable = [ "channel_id"];
     public function up()
     {
         Schema::create('channels', function (Blueprint $table) {
