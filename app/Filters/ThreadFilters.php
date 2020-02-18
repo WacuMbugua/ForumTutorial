@@ -1,13 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Filters;
 
 use App\User;
 use Illuminate\Http\Request;
 
-class ThreadFilters
+class ThreadFilters extends Filters
 {
     protected $request;
+    protected $builder;
 
     public function __construct(Request $request)
     {
