@@ -7,20 +7,18 @@ use Illuminate\Http\Request;
 
 class ThreadFilters extends Filters
 {
-    protected $request;
-    protected $builder;
+    protected $filters = ['by', 'popular'];
 
-    public function __construct(Request $request)
+    protected function by($username)
     {
-        $this->request = $request;
-    }
-
-    public function apply($builder)
-    {
-        if (!$username = $this->request->by) return $builder;
-
         $user = User::where('name', $username)->firstOrFail();
 
-        return $builder->where('user_id', $user->id);
+        return $this->builder->where('user_id', $user->id);
+    }
+
+    protected function popular()
+    {
+        $this->builder->getQuery()->orders = [];
+        $this->builder->orderBy('replies_count', 'desc');
     }
 }
