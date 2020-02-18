@@ -23,6 +23,13 @@ class ThreadsController extends Controller
         } else {
             $threads = Thread::latest()->get();
         }
+        f ($username = request('by')) {
+        $user = \App\User::where('name', $username)->firstOrFail();
+        $threads->where('user_id', $user->id);
+    }
+
+        $threads = $threads->get();
+
         return view('threads.index', compact('threads'));
     }
     /**

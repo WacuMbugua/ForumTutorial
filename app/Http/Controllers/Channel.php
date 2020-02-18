@@ -81,4 +81,8 @@ class Channel extends Controller
     {
         //
     }
+
+    public function threads()
+    {
+    }
 }
