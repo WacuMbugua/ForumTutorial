@@ -40,4 +40,12 @@ class User extends Authenticatable
     public static function where(string $string, $username)
     {
     }
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+    public function threads()
+    {
+        return $this->hasMany(Thread::class)->latest();
+    }
 }
