@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -14,7 +16,7 @@
                                 <h4 class="flex">
                                     <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
                                 </h4>
-                                <strong>{{$thread->replies_count}} {{ str_plural('reply', $thread->replies_count) }}</strong>
+                                <strong>{{$thread->replies_count}} {{ Str::plural('reply', $thread->replies_count) }}</strong>
                             </div>
                             <div class="body">{{ $thread->body }}</div>
                         </article>

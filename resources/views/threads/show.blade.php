@@ -32,7 +32,9 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        This thread was created {{ $thread->created_at->diffForHumans() }}
+                        This thread was created {{ $thread->created_at->diffForHumans() }} by
+                        <a href="#">{{ $thread->creator->name }}</a> and currently
+                        has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}.
                     </div>
                 </div>
             </div>
