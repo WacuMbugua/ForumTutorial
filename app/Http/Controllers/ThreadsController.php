@@ -102,9 +102,15 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
-        //
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/threads');
     }
 
     /**
@@ -112,19 +118,19 @@ class ThreadsController extends Controller
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
      */
     protected function getThreads(Channel $channel)
-    {
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
-
-        if ($username = request('by')) {
-            $user = \App\User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
-
-        $threads = $threads->get();
-        return $threads;
+{
+    if ($channel->exists) {
+        $threads = $channel->threads()->latest();
+    } else {
+        $threads = Thread::latest();
     }
+
+    if ($username = request('by')) {
+        $user = \App\User::where('name', $username)->firstOrFail();
+        $threads->where('user_id', $user->id);
+    }
+
+    $threads = $threads->get();
+    return $threads;
+}
 }
