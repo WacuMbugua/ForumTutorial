@@ -25,6 +25,7 @@
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button class="btn btn-danger btn-xs">Delete Reply</button>
+                                    <button @click="destroy" class="btn btn-xs btn-danger mr-1">Delete</button>
                                 </form>
                             </div>
                         @endcan
