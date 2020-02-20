@@ -50,4 +50,21 @@ class Thread extends Model
             $thread->replies()->delete();
         });
     }
+            static::created(function ($thread) {
+                Activity::create([
+                    'type' => 'created_' . strtolower((new \ReflectionClass($thread))->getShortName()),
+                    'user_id' => auth()->id(),
+                    'subject_id' => $thread->id,
+                    'subject_type' => get_class($thread)
+                ]);
+            });
+}
+protected function recordActivity($event)
+{
+    Activity::create([
+        'type' => 'created_' . strtolower((new \ReflectionClass($this))->getShortName()),
+        'user_id' => auth()->id(),
+        'subject_id' => $this->id,
+        'subject_type' => get_class($this)
+    ]);
 }

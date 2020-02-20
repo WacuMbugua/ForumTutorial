@@ -118,11 +118,12 @@ class ThreadsController extends Controller
         return redirect('/threads');
     }
 
-    /**
-     * @param Channel $channel
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    protected function getThreads(Channel $channel)
+/**
+ * @param Channel $channel
+ * @param $thread
+ * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
+ */
+    protected function getThreads(Channel $channel, $thread)
 {
     if ($thread->user_id != auth()->id()) {
         abort(403, 'You have no permission to do this.');
