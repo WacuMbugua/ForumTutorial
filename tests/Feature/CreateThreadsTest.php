@@ -93,5 +93,15 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
+    public function test_unauthorized_users_can_not_delete_threads()
+    {
+        $thread = create('App\Thread', ['user_id' => auth()->id()]);
+
+        $this->delete($thread->path())->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete($thread->path())->assertRedirect('/login');
+        $this->delete($thread->path())->assertStatus(403);
+    }
 }
 

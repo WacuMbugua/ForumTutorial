@@ -104,11 +104,16 @@ class ThreadsController extends Controller
      */
     public function destroy($channel, Thread $thread)
     {
+        $this->authorize('update', $thread);
+
         $thread->delete();
 
         if (request()->wantsJson()) {
             return response([], 204);
         }
+
+        return redirect('/threads');
+    }
 
         return redirect('/threads');
     }
@@ -119,9 +124,10 @@ class ThreadsController extends Controller
      */
     protected function getThreads(Channel $channel)
 {
-    if ($channel->exists) {
-        $threads = $channel->threads()->latest();
-    } else {
+    if ($thread->user_id != auth()->id()) {
+        abort(403, 'You have no permission to do this.');
+    }
+     {
         $threads = Thread::latest();
     }
 
