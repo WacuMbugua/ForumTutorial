@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-heading">
+        <div class="level">
+            <span class="flex">
+
+                {{ $profileUser->name }} published <a href="{{ $activity->subject->path() }}">{{ $activity->subject->title }}</a>
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        {{ $activity->subject->body }}
+    </div>
+</div>

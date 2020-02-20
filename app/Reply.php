@@ -29,4 +29,8 @@ class Reply extends Model
     {
         return $this->favorites()->where('user_id', auth()->id())->exists();
     }
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
+    }
 }
