@@ -1,5 +1,5 @@
 
-
+<div id="reply-{{ $reply->id }}" class="panel panel-default">
 <div class="card">
     <div class="card-heading">
         <div class="level">
