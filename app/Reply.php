@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use Favoriteable, RecordsActivity;
+
     protected $guarded = [];
+
+    protected $with = ['owner', 'favorites'];
+
+
+    protected $appends = ['favoritesCount', 'isFavorited'];
 
 
         public function owner()
