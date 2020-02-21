@@ -112,6 +112,13 @@
         <main class="py-4">
             @yield('content')
             <flash class="alert-flash" message="{{ session('flash') }}"></flash>
+
+            <script>
+                window.App = {!! json_encode([
+        'user' => Auth::user(),
+        'signedIn' => Auth::check()
+    ]) !!};
+            </script>
         </main>
     </div>
 </body>
