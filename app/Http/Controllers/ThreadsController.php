@@ -20,8 +20,9 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
+       $threads = Thread::filter($filters)->get();
         $threads = $this->getThreads($channel);
 
         return view('threads.index', compact('threads'));
@@ -129,19 +130,15 @@ class ThreadsController extends Controller
  * @param $thread
  * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
  */
-    protected function getThreads(Channel $channel, Thread $thread)
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
-        if ($thread->user_id != auth()->id()) abort(403, 'You have no permission to do this.');
-        {
-            $threads = Thread::latest();
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
         }
 
-    if ($username = request('by')) {
-        $user = \App\User::where('name', $username)->firstOrFail();
-        $threads->where('user_id', $user->id);
+        $threads = $threads->get();
+        return $threads;
     }
-
-    $threads = $threads->get();
-    return $threads;
-}
 }

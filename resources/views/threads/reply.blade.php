@@ -1,5 +1,5 @@
-<div class="card">
-    <div class="card-body">
+<div id="reply-{{ $reply->id }}" class="card">
+    <div class="card-heading">
         <div class="level">
             <h5 class="flex">
                 <a href="{{ route('profile', $reply->owner) }}">{{$reply->owner->name}}</a> said {{ $reply->created_at->diffForHumans() }}

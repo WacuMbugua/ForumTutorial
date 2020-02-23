@@ -19,6 +19,9 @@ trait RecordsActivity
                $model->recordActivity($event);
            });
            }
+       static::deleting(function ($model) {
+           $model->activity()->delete();
+       });
        }
        protected static function getActivitiesToRecord()
        {
@@ -42,6 +45,6 @@ trait RecordsActivity
     }
     public function activity()
     {
-        return $this->MorphMany('App\Activity', 'subject')
+        return $this->MorphMany('App\Activity', 'subject');
     }
 }
