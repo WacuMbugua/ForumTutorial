@@ -40,7 +40,7 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -64,13 +64,13 @@ class ThreadsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($channelId, Thread $thread)
     {
         return view('threads.show', [
             'thread' => $thread,
-            'replies' => $thread->replies()->paginate(2)
+            'replies' => $thread->replies()->paginate(20)
         ]);
     }
 
@@ -100,12 +100,20 @@ class ThreadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Thread  $thread
+     * @param \App\Thread $thread
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($channel, Thread $thread)
     {
-        $this->authorize('update', $thread);
+        // if ($thread->user_id != auth()->id()) {
+        //    abort(403, "You do not have permission to do this")
+          // if (request()->wantsJson()) {
+            //   return response(['status' => 'permission Denied'], 403);
+         //  }
+         //  return redirect ('/login');
+
+       $this->authorize('update', $thread);
 
         $thread->delete();
 
@@ -116,22 +124,17 @@ class ThreadsController extends Controller
         return redirect('/threads');
     }
 
-        return redirect('/threads');
-    }
-
 /**
  * @param Channel $channel
  * @param $thread
  * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
  */
-    protected function getThreads(Channel $channel, $thread)
-{
-    if ($thread->user_id != auth()->id()) {
-        abort(403, 'You have no permission to do this.');
-    }
-     {
-        $threads = Thread::latest();
-    }
+    protected function getThreads(Channel $channel, Thread $thread)
+    {
+        if ($thread->user_id != auth()->id()) abort(403, 'You have no permission to do this.');
+        {
+            $threads = Thread::latest();
+        }
 
     if ($username = request('by')) {
         $user = \App\User::where('name', $username)->firstOrFail();

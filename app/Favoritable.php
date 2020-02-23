@@ -36,4 +36,11 @@ trait Favoriteable
     {
         return $this->isFavorited();
     }
+
+    public function getFavoritesAttribute()
+    {
+        return $this->favorites->count();
+    }
+
 }
+

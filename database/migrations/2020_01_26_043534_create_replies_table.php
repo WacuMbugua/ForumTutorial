@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateRepliesTable extends Migration
 {
     protected $fillable = [ "user_id"];
-    
+
     public function up()
     {
         Schema::dropIfExists('replies');
@@ -17,8 +17,10 @@ class CreateRepliesTable extends Migration
             $table->integer('user_id');
             $table->text('body');
             $table->timestamps();
+
+            //$table->foreign('thread_id')->onDelete('cas')
         });
     }
 
-    
+
 }

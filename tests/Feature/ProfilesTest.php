@@ -18,7 +18,7 @@ class ProfilesTest extends TestCase
         $this->withoutExceptionHandling()->get('/profiles/' . $user->name)
             ->assertSee($user->name);
     }
-    public function test_profiles_display_all_threads_by_the_user()
+    public function test_profiles_display_all_threads_created_by_the_associated_user()
     {
         $user = create('App\User');
 
