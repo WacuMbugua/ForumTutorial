@@ -40,9 +40,16 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
+                        <p>
                         This thread was created {{ $thread->created_at->diffForHumans() }} by
                         <a href="#">{{ $thread->creator->name }}</a> and currently
-                        has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}.
+                        has
+                        <b><span v-text="repliesCount"></span></b> {{ str::plural('reply', $thread->replies_count) }}.
+                        </p>
+
+                        <p>
+                            <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                        </p>
                     </div>
                 </div>
             </div>
