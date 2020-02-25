@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Filters\ThreadFilters;
-use Illuminate\Database\Builder;
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
+use Tests\Feature\ActivityTest;
 
 class Thread extends Model
 {
@@ -46,6 +46,7 @@ class Thread extends Model
     public function addReply($reply)
     {
         $this->replies()->create($reply);
+        event(new ThreadReceivedNewReply($reply));
     }
 
     public function scopeFilter($query, $filters)
